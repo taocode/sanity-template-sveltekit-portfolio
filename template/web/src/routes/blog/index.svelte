@@ -1,16 +1,18 @@
-<script context="module">
-  // import { fetchSampleProjects } from "../../stores/projectStore"
-  // export async function load() {
-  //   try {
-  //     // fetchSampleProjects()
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
+<script context="module" lang="ts">
+	import { fetchSampleProjects, sampleProjects } from "../../stores/projectStore"
+	/** @type {import('@sveltejs/kit').Load} */
+	export async function load({ page, fetch, session, stuff }) {
+		fetchSampleProjects()
+		return {
+			props: {
+				posts: sampleProjects
+			}
+		};
+	}
 </script>
 
 <script>
-  import { sampleProjects } from "../../stores/projectStore";
+//   import { sampleProjects } from "../../stores/projectStore";
   console.log($sampleProjects)
   export let posts = sampleProjects
 

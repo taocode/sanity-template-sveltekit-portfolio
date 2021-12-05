@@ -4,12 +4,12 @@ import client from '$lib/sanityClient'
 
 export const sampleProjects = writable([])
 
-let runOnce = false
+let loaded = false
 export const fetchSampleProjects = async () => {
-  console.log('api fetchSampleProjects()')
-  const posts = await client.fetch('*[_type == "sampleProject" && defined(slug.current) && publishedAt < now()]|order(publishedAt desc)')
-  sampleProjects.set(posts)
-  runOnce = true
+  if (! loaded) {
+    const posts = await client.fetch('*[_type == "sampleProject" && defined(slug.current) && publishedAt < now()]|order(publishedAt desc)')
+    // console.log('api fetchSampleProjects()', posts)
+    sampleProjects.set(posts)
+    loaded = true
+  }
 }
-console.log({runOnce, sampleProjects})
-if (!runOnce) fetchSampleProjects()
