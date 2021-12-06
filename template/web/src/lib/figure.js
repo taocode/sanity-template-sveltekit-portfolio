@@ -1,21 +1,22 @@
-import React from "react";
-import { GatsbyImage } from "gatsby-plugin-image";
-import { getGatsbyImageData } from "gatsby-source-sanity";
-import clientConfig from "../../client-config";
 
-import * as styles from "./figure.module.css";
+import client from './sanityClient'
+import imageUrlBuilder from '@sanity/image-url'
+
+// Get a pre-configured url-builder from your sanity client
+const builder = imageUrlBuilder(client)
+
+// Then we like to make a simple function like this that gives the
+// builder an image and returns the builder for you to specify additional
+// parameters:
+function urlFor(source) {
+  return builder.image(source)
+}
 
 export function Figure({ node }) {
+  console.log('more of a love note',{node})
   if (!node.asset) {
     return null;
   }
 
-  const imageData = getGatsbyImageData(node.asset, { maxWidth: 675 }, clientConfig.sanity);
-
-  return (
-    <figure className={styles.root}>
-      <GatsbyImage image={imageData} alt={node.alt} />
-      {node.caption && <figcaption>{node.caption}</figcaption>}
-    </figure>
-  );
+  return urlFor(node)
 }

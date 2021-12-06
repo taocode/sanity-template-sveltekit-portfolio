@@ -2,16 +2,14 @@
 import type { Load } from '@sveltejs/kit';
 
 // see https://kit.svelte.dev/docs#loading
-export const load: Load = async (arg) => {
-  console.log({arg})
-    const { fetch, page } = arg
+export const load: Load = async ({fetch, page}) => {
     try {
       // As with the server route, we have acces to params.slug here
-      console.log(page.params.slug,{page})
+      // console.log(page.params.slug,{page})
       const res = await fetch(`/api/blog/${page.params.slug}.json`)
-      console.log({res})
+      // console.log({res})
       const post = await res.json()
-      console.log({post})
+      // console.log({post})
       return {
 				props: { post }
 			}
