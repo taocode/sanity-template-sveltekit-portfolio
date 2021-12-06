@@ -1,12 +1,25 @@
-<script context="module">
-  export async function preload({ params }) {
+<script context="module" lang="ts">
+import type { Load } from '@sveltejs/kit';
+
+// see https://kit.svelte.dev/docs#loading
+export const load: Load = async (arg) => {
+  console.log({arg})
+    const { fetch, page } = arg
     try {
       // As with the server route, we have acces to params.slug here
-      const res = await this.fetch(`api/blog/${params.slug}`);
-      const { post } = await res.json();
-      return { post };
+      console.log(page.params.slug,{page})
+      const res = await fetch(`/api/blog/${page.params.slug}.json`)
+      console.log({res})
+      const post = await res.json()
+      console.log({post})
+      return {
+				props: { post }
+			}
     } catch (err) {
-      this.error(500, err);
+      return {
+        status: 500,
+        error: err
+      };
     }
   };
 </script>
