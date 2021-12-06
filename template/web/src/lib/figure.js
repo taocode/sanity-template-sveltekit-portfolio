@@ -13,7 +13,7 @@ function urlFor(source) {
 }
 
 export function Figure({ node }) {
-  console.log('more of a love note',{node})
+  console.log('Figure({ node })',{node})
   if (!node.asset) {
     return null;
   }

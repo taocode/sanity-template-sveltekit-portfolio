@@ -4,7 +4,6 @@ import type { Load } from '@sveltejs/kit';
 // see https://kit.svelte.dev/docs#loading
 export const load: Load = async ({fetch, page}) => {
     try {
-      // As with the server route, we have acces to params.slug here
       // console.log(page.params.slug,{page})
       const res = await fetch(`/api/blog/${page.params.slug}.json`)
       // console.log({res})
@@ -14,6 +13,7 @@ export const load: Load = async ({fetch, page}) => {
 				props: { post }
 			}
     } catch (err) {
+      console.log('blog load error',err)
       return {
         status: 500,
         error: err
@@ -23,12 +23,22 @@ export const load: Load = async ({fetch, page}) => {
 </script>
 
 <script>
-  import BlockContent from "@movingbrands/svelte-portable-text";
+  import BlockContent from "@arzidava/svelte-portable-text";
   import serializers from "$lib/serializers";
 
   export let post;
 </script>
 
+<svelte:head>
+  <title>{post.title}</title>
+</svelte:head>
+
+<h1>{post.title}</h1>
+
+<div class="content">
+  <BlockContent blocks={post.body} {serializers} />
+</div>
+  
 <style>
   .content :global(h2) {
     font-size: 1.4em;
@@ -52,13 +62,3 @@ export const load: Load = async ({fetch, page}) => {
     margin: 0 0 0.5em 0;
   }
 </style>
-
-<svelte:head>
-  <title>{post.title}</title>
-</svelte:head>
-
-<h1>{post.title}</h1>
-
-<div class="content">
-  <BlockContent blocks={post.body} {serializers} />
-</div>
