@@ -3,7 +3,7 @@
 
 	// see https://kit.svelte.dev/docs#loading
 	export const load: Load = async ({ fetch }) => {
-		const res = await fetch('/api/blog.json');
+		const res = await fetch('/project.json');
 
 		if (res.ok) {
 			const posts = await res.json();
@@ -22,6 +22,13 @@
 </script>
 
 <script lang="ts">
+import Image from '$lib/Image.svelte'
+  import urlBuilder from '@sanity/image-url'
+  import client from '$lib/sanityClient'
+  import BlockContent from "@arzidava/svelte-portable-text";
+  import serializers from "$lib/serializers";
+
+import { post } from '../todos/index.json';
 	
 	type Post = {
 		slug: {
@@ -36,28 +43,43 @@
     return new Date(date).toLocaleDateString()
   }
 
-	export let posts: Post[];
+  const urlFor = source => urlBuilder(client).image(source);
+
+export let posts: Post[];
 </script>
 
 <svelte:head>
-	<title>Blog </title>
+	<title>Projects</title>
 </svelte:head>
 
-<h1>Recent posts</h1>
+<h1>Projects</h1>
 
-<ul>
+<div class="container">
 	{#each posts as post}
 		<!-- we're using the non-standard `sveltekit:prefetch` attribute to
 				tell SvelteKit to load the data for the page as soon as
 				the user hovers over the link or taps it, instead of
 				waiting for the 'click' event -->
-		<li><a sveltekit:prefetch href='blog/{post.slug.current}'>{post.title}</a> ({formatDate(post.publishedAt)})</li>
+		<a sveltekit:prefetch href='project/{post.slug.current}'>
+		<div class="project-preview">
+			<Image url={urlFor(post.mainImage).width(600).height(337)} alt={post.mainImage.alt} />
+				{post.title}
+				<div><BlockContent blocks={post.excerpt}
+					{serializers}/></div>
+
+		</div>
+		</a> 
 	{/each}
-</ul>
+</div>
 
 <style>
-	ul {
+	.container {
 		margin: 0 0 1em 0;
 		line-height: 1.5;
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.container > a {
+		width: 33%;
 	}
 </style>

@@ -5,7 +5,7 @@ import type { Load } from '@sveltejs/kit';
 export const load: Load = async ({fetch, page}) => {
     try {
       // console.log(page.params.slug,{page})
-      const res = await fetch(`/api/blog/${page.params.slug}.json`)
+      const res = await fetch(`/project/${page.params.slug}.json`)
       // console.log({res})
       const post = await res.json()
       // console.log({post})
@@ -25,16 +25,23 @@ export const load: Load = async ({fetch, page}) => {
 <script>
   import BlockContent from "@arzidava/svelte-portable-text";
   import serializers from "$lib/serializers";
+  import urlBuilder from '@sanity/image-url';
+  import client from '$lib/sanityClient';
+  import Image from "$lib/Image.svelte";
 
   export let post;
+  const urlFor = source => urlBuilder(client).image(source);
+
+  $: console.log(post)
+$: heroImgURL = urlFor(post.mainImage).width(1200).height(675).fit('crop')
+
 </script>
 
 <svelte:head>
   <title>{post.title}</title>
 </svelte:head>
-
+<Image url={heroImgURL} alt={post.mainImage.alt} />
 <h1>{post.title}</h1>
-
 <div class="content">
   <BlockContent blocks={post.body} {serializers} />
 </div>
