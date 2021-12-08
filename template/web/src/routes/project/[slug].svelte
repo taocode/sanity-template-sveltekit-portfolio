@@ -13,7 +13,7 @@ export const load: Load = async ({fetch, page}) => {
 				props: { project }
 			}
     } catch (err) {
-      console.log('blog load error',err)
+      console.log('project load error',err)
       return {
         status: 500,
         error: err
@@ -33,55 +33,89 @@ export const load: Load = async ({fetch, page}) => {
   export let project;
   const urlFor = source => urlBuilder(client).image(source);
 
-  const heroImgURL = urlFor(project.mainImage).width(1200).height(675).fit('crop')
-  const publishedAt = project.publishedAt
-  const publishDate = differenceInDays(parseISO(publishedAt), new Date()) > 3
+  $: heroImage = {
+    alt: project.mainImage.alt,
+    url: urlFor(project.mainImage).width(1200).height(675).fit('crop')
+    }
+  $: publishedAt = project.publishedAt
+  $: publishDate = differenceInDays(parseISO(publishedAt), new Date()) > 3
                   ? formatDistance(parseISO(publishedAt), new Date())
                   : format(parseISO(publishedAt), "MMMM do yyyy")
-  console.log(project.categories)
-  const categories = project.categories.map(category => 
-            `<li key=${category._id}>${category.title}</li>`
-          )
+  $: categories = project.categories
+  $: members = project.members
+  $: relatedProjects = project.relatedProjects
 </script>
 
 <svelte:head>
   <title>{project.title}</title>
 </svelte:head>
-<Image url={heroImgURL} alt={project.mainImage.alt} />
+<Image url={heroImage.url} alt={heroImage.alt} />
 
 <div class="container">
   <div class="grid">
     <div class="content-main">
       <h1>{project.title}</h1>
+      {#if project.body}
       <div class="content">
         <BlockContent blocks={project.body} {serializers} />
       </div>
+      {/if}
     </div>
     <div class="content-meta">
       <div class="meta-date">{publishDate}</div>
+      {#if members}
       <div class="meta-item">
         <h2>Project members</h2>
-        {#each project.members as m}
-        <BlockContent blocks={m} {serializers} />
+        {#each members as m}
+        <div class="meta-member">
+          <div class="meta-member-image">
+            <Image alt={m.person.image.alt} url={urlFor(m.person.image).width(100).height(100).fit('crop')}/>
+          </div>
+          <div class="meta-member-data">
+            <div class=""><strong>{m.person.name}</strong></div>
+            <div class="">{m.roles.join(', ')}</div>
+          </div>
+        </div>
         {/each}
-        
       </div>
+      {/if}
+      {#if categories}
       <div class="meta-item">
         <h3>Categories</h3>
-        {#each project.members as m}
-        <BlockContent blocks={m} {serializers} />
-        {/each}
-        <ul>
+        <ul class="meta-categories">
           {#each categories as c}
-          <div class="">{@html c}</div>
+            <li key={c._id}>{c.title}</li>
           {/each}
         </ul>
       </div>
+      {/if}
+      {#if relatedProjects}
+      <div class="meta-item">
+        <h3>Related Projects</h3>
+        <ul class="meta-related">
+          {#each relatedProjects as rp}
+          <li>
+            <a sveltekit:prefetch href={rp.slug.current}>
+              {rp.title}
+            </a>
+          </li>
+          {/each}
+        </ul>
+      </div>
+      {/if}
     </div>
   </div>
 </div>
   
 <style>
+  .meta-categories,
+  .meta-related {
+    list-style-type: none;
+    padding: 0.25em 0;
+  }
+  .meta-categories li {
+    margin: 0.75em 0;
+  }
   .meta-date {
     color: var(--color-gray);
     margin: 1.5em 0 3em;
@@ -89,6 +123,20 @@ export const load: Load = async ({fetch, page}) => {
   .meta-item {
     border-top: 2px solid var(--color-gray-very-light);
     margin: 2em 0 3em;
+  }
+  .meta-member {
+    display: flex;
+    margin: 1.5em 0;
+    line-height: 1.33;
+  }
+  .meta-member-image {
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .meta-member-data {
+    margin-left: 0.5em;
   }
   .container {
     max-width: 960px;
