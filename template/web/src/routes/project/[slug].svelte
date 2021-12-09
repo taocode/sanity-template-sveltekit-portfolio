@@ -31,7 +31,7 @@ export const load: Load = async ({fetch, page}) => {
   import ProjectMembers from '$lib/ProjectMembers.svelte'
   import Categories from '$lib/Categories.svelte'
   import { format, parseISO, differenceInDays, formatDistance } from 'date-fns'
-import RelatedProjects from "$lib/RelatedProjects.svelte"
+  import RelatedProjects from "$lib/RelatedProjects.svelte"
 
   const urlFor = source => urlBuilder(client).image(source)
   
@@ -45,9 +45,6 @@ import RelatedProjects from "$lib/RelatedProjects.svelte"
   $: publishDate = differenceInDays(publishedAt, new Date()) > 3
                   ? formatDistance(publishedAt, new Date())
                   : format(publishedAt, "MMMM do yyyy")
-  $: categories = project.categories
-  $: members = project.members
-  $: relatedProjects = project.relatedProjects
 </script>
 
 <svelte:head>
@@ -69,17 +66,17 @@ import RelatedProjects from "$lib/RelatedProjects.svelte"
       <div class="meta-date">{publishDate}</div>
       {#if project.members}
       <div class="meta-item">
-        <ProjectMembers {project} />
+        <ProjectMembers members={project.members} />
       </div>
       {/if}
       {#if project.categories}
       <div class="meta-item">
-        <Categories {project} />
+        <Categories categories={project.categories} />
       </div>
       {/if}
       {#if project.relatedProjects}
       <div class="meta-item">
-        <RelatedProjects {project} />
+        <RelatedProjects projects={project.relatedProjects} />
       </div>
       {/if}
     </div>

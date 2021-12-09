@@ -33,6 +33,9 @@ export let projects: Project[];
 	<title>Projects</title>
 </svelte:head>
 
-<h1>Projects</h1>
+<div class="container">
+	<h1>Projects</h1>
+</div>
 
 <ProjectPreviewGrid {projects} />
+

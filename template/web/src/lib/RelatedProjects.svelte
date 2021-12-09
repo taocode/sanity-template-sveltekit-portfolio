@@ -5,13 +5,12 @@
   import client from '$lib/sanityClient';
   const urlFor = source => urlBuilder(client).image(source);
 
-  export let project
-  $: relatedProjects = project.relatedProjects
+  export let projects
 </script>
 
 <h3>Related Projects</h3>
 <ul class="meta-related">
-  {#each relatedProjects as rp}
+  {#each projects as rp}
   <li>
     <a sveltekit:prefetch href={rp.slug.current}>
       {rp.title}

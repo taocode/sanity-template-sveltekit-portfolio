@@ -5,8 +5,7 @@
   import client from '$lib/sanityClient';
   const urlFor = source => urlBuilder(client).image(source);
 
-  export let project
-  $: members = project.members
+  export let members
 </script>
 
 <h2>Project members</h2>
