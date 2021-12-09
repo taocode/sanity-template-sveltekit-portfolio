@@ -13,9 +13,6 @@ export const get: RequestHandler = async (req) => {
     categories[]->{_id,title},
     body[]{
       ...,
-      children[]{
-        ...,
-      }
     },
     members[]{
       roles,

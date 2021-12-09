@@ -34,37 +34,17 @@
 </svelte:head>
 
 <section>
-	<h1>
-		<div class="welcome">
-			<picture>
-				<source srcset="svelte-welcome.webp" type="image/webp" />
-				<img src="svelte-welcome.png" alt="Welcome" />
-			</picture>
-		</div>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/index.svelte</strong>
-	</h2>
-
-	<ProjectPreviewGrid {projects} />
+<div class="container">
+	<h2>Latest Projects</h2>
+</div>
+<ProjectPreviewGrid {projects} />
 </section>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 1;
-	}
 
-	h1 {
-		width: 100%;
+	h2 {
+		text-transform: uppercase;;
 	}
-
 	.welcome {
 		position: relative;
 		width: 100%;

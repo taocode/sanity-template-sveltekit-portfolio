@@ -23,24 +23,28 @@ export const load: Load = async ({fetch, page}) => {
 </script>
 
 <script>
-  import BlockContent from "@arzidava/svelte-portable-text";
-  import serializers from "$lib/serializers";
-  import urlBuilder from '@sanity/image-url';
-  import client from '$lib/sanityClient';
-  import Image from "$lib/Image.svelte";
+  import BlockContent from "@arzidava/svelte-portable-text"
+  import serializers from "$lib/serializers"
+  import urlBuilder from '@sanity/image-url'
+  import client from '$lib/sanityClient'
+  import Image from "$lib/Image.svelte"
+  import ProjectMembers from '$lib/ProjectMembers.svelte'
+  import Categories from '$lib/Categories.svelte'
   import { format, parseISO, differenceInDays, formatDistance } from 'date-fns'
+import RelatedProjects from "$lib/RelatedProjects.svelte"
 
-  export let project;
-  const urlFor = source => urlBuilder(client).image(source);
+  const urlFor = source => urlBuilder(client).image(source)
+  
+  export let project
 
   $: heroImage = {
-    alt: project.mainImage.alt,
-    url: urlFor(project.mainImage).width(1200).height(675).fit('crop')
+      alt: project.mainImage.alt,
+      url: urlFor(project.mainImage).width(1200).height(675).fit('crop')
     }
-  $: publishedAt = project.publishedAt
-  $: publishDate = differenceInDays(parseISO(publishedAt), new Date()) > 3
-                  ? formatDistance(parseISO(publishedAt), new Date())
-                  : format(parseISO(publishedAt), "MMMM do yyyy")
+  $: publishedAt = parseISO(project.publishedAt)
+  $: publishDate = differenceInDays(publishedAt, new Date()) > 3
+                  ? formatDistance(publishedAt, new Date())
+                  : format(publishedAt, "MMMM do yyyy")
   $: categories = project.categories
   $: members = project.members
   $: relatedProjects = project.relatedProjects
@@ -63,44 +67,19 @@ export const load: Load = async ({fetch, page}) => {
     </div>
     <div class="content-meta">
       <div class="meta-date">{publishDate}</div>
-      {#if members}
+      {#if project.members}
       <div class="meta-item">
-        <h2>Project members</h2>
-        {#each members as m}
-        <div class="meta-member">
-          <div class="meta-member-image">
-            <Image alt={m.person.image.alt} url={urlFor(m.person.image).width(100).height(100).fit('crop')}/>
-          </div>
-          <div class="meta-member-data">
-            <div class=""><strong>{m.person.name}</strong></div>
-            <div class="">{m.roles.join(', ')}</div>
-          </div>
-        </div>
-        {/each}
+        <ProjectMembers {project} />
       </div>
       {/if}
-      {#if categories}
+      {#if project.categories}
       <div class="meta-item">
-        <h3>Categories</h3>
-        <ul class="meta-categories">
-          {#each categories as c}
-            <li key={c._id}>{c.title}</li>
-          {/each}
-        </ul>
+        <Categories {project} />
       </div>
       {/if}
-      {#if relatedProjects}
+      {#if project.relatedProjects}
       <div class="meta-item">
-        <h3>Related Projects</h3>
-        <ul class="meta-related">
-          {#each relatedProjects as rp}
-          <li>
-            <a sveltekit:prefetch href={rp.slug.current}>
-              {rp.title}
-            </a>
-          </li>
-          {/each}
-        </ul>
+        <RelatedProjects {project} />
       </div>
       {/if}
     </div>
@@ -108,14 +87,6 @@ export const load: Load = async ({fetch, page}) => {
 </div>
   
 <style>
-  .meta-categories,
-  .meta-related {
-    list-style-type: none;
-    padding: 0.25em 0;
-  }
-  .meta-categories li {
-    margin: 0.75em 0;
-  }
   .meta-date {
     color: var(--color-gray);
     margin: 1.5em 0 3em;
@@ -123,20 +94,6 @@ export const load: Load = async ({fetch, page}) => {
   .meta-item {
     border-top: 2px solid var(--color-gray-very-light);
     margin: 2em 0 3em;
-  }
-  .meta-member {
-    display: flex;
-    margin: 1.5em 0;
-    line-height: 1.33;
-  }
-  .meta-member-image {
-    width: 3em;
-    height: 3em;
-    border-radius: 50%;
-    overflow: hidden;
-  }
-  .meta-member-data {
-    margin-left: 0.5em;
   }
   .container {
     max-width: 960px;

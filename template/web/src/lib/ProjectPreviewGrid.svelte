@@ -36,7 +36,7 @@
 		margin: 0 auto 1em;
 		padding: 0;
 		line-height: 1.25;
-		width: min(90%, 75rem);
+		width: min(90%, 60rem);
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-gap: 2em;
