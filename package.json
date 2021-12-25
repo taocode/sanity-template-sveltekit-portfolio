@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "sanity-template-gatsby-portfolio",
+  "name": "sanity-template-sveltekit-portfolio",
   "scripts": {
     "netlify:build-studio": "npm run build && cd build && npm install && npm run build-studio && cp studio/netlify.toml studio/dist",
     "netlify:build-web": "npm run build && cd build && npm install && npm run build-web",

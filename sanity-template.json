@@ -1,17 +1,17 @@
 {
   "version": 0,
-  "title": "Portfolio with Gatsby",
+  "title": "Portfolio with SvelteKit",
   "description": "Clean React.js starting point for portfolios, project listings or case studies.",
   "previewMedia": {
     "type": "image",
     "src": "assets/frontend.jpg",
-    "alt": "A preview image of the Gatsby portfolio website."
+    "alt": "A preview image of the SvelteKit portfolio website."
   },
   "technologies": [
     {
-      "id": "gatsby",
-      "name": "Gatsby",
-      "url": "https://www.gatsbyjs.org/"
+      "id": "sveltekit",
+      "name": "SvelteKit",
+      "url": "https://kit.svelte.dev/"
     },
     {
       "id": "netlify",

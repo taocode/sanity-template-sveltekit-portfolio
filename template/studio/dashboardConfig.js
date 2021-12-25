@@ -3,7 +3,7 @@ export default {
     {
       name: 'sanity-tutorials',
       options: {
-        templateRepoId: 'sanity-io/sanity-template-gatsby-portfolio'
+        templateRepoId: 'taocode/sanity-template-sveltekit-portfolio'
       }
     },
     {name: 'structure-menu'},

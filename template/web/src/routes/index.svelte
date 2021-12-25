@@ -5,22 +5,23 @@
 
 	// see https://kit.svelte.dev/docs#loading
 	export const load: Load = async ({ fetch }) => {
-		const res = await fetch('/project.json');
+		try {
+			const res = await fetch('/project.json');
 
-		if (res.ok) {
-			const projects = await res.json();
+			if (res.ok) {
+				const projects = await res.json();
 
+				return {
+					props: { projects }
+				}
+			}
+		} catch (err) {
 			return {
-				props: { projects }
-			};
+				status: 500,
+				error: new Error("Error loading projects")
+			}
 		}
-
-		const { message } = await res.json();
-
-		return {
-			error: new Error(message)
-		};
-	};
+	}
 </script>
 
 <script lang="ts">
@@ -42,6 +43,6 @@
 
 <style>
 	h2 {
-		text-transform: uppercase;;
+		text-transform: uppercase;
 	}
 </style>

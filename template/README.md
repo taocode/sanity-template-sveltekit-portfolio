@@ -2,11 +2,11 @@
 
 A portfolio using structured content and a static site builder.
 
-Deployed from [sanity.io/create](https://www.sanity.io/create/?template=sanity-io%2Fsanity-template-gatsby-portfolio).
+Deployed from [sanity.io/create](https://www.sanity.io/create/?template=taocode%2Fsanity-template-sveltekit-portfolio).
 
 ## What you have
 
-- A blazing fast portfolio with [Gatsby.js](https://gatsbyjs.org)
+- A blazing fast portfolio with [SvelteKit](https://kit.svelte.dev/)
 - Structured content using [Sanity.io](https://www.sanity.io)
 - Global deployment on [Netlify](https://netlify.com)
 
@@ -25,7 +25,6 @@ Deployed from [sanity.io/create](https://www.sanity.io/create/?template=sanity-i
 2. Copy `.env.development.template` to `.env.development` and paste in the token: `SANITY_READ_TOKEN="yourTokenHere"`.
 3. Restart the development server (`ctrl + C` and `npm run dev`).
 
-If you want to disable the preview you can set `watchMode: false` in gatsby-config.js. If you just want to preview published changes you can set `overlayDrafts: false` in gatsby-config.js.
 
 ## Deploy changes
 

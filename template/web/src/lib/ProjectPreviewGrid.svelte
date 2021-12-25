@@ -2,7 +2,7 @@
 	import Image from '$lib/Image.svelte'
   import urlBuilder from '@sanity/image-url'
   import client from '$lib/sanityClient'
-  import BlockContent from "@arzidava/svelte-portable-text";
+  import PortableText from '@portabletext/svelte';
   import serializers from "$lib/serializers";
 	
   import type { Project } from './project';
@@ -23,7 +23,7 @@
 			<div class="project-preview">
 				<Image url={urlFor(p.mainImage).width(600).height(337)} alt={p.mainImage.alt} />
 					<h3>{p.title}</h3>
-					<BlockContent blocks={p.excerpt}
+					<PortableText blocks={p.excerpt}
 						{serializers}/>
 			</div>
 			</a>

@@ -3,35 +3,34 @@ import type { Load } from '@sveltejs/kit';
 
 // see https://kit.svelte.dev/docs#loading
 export const load: Load = async ({fetch, page}) => {
-    try {
-      // console.log(page.params.slug,{page})
-      const res = await fetch(`/project/${page.params.slug}.json`)
-      // console.log({res})
-      const project = await res.json()
-      // console.log({project})
-      return {
-				props: { project }
-			}
-    } catch (err) {
-      console.log('project load error',err)
-      return {
-        status: 500,
-        error: err
-      };
+  try {
+    // console.log(page.params.slug,{page})
+    const res = await fetch(`/project/${page.params.slug}.json`)
+    // console.log({res})
+    const project = await res.json()
+    // console.log({project})
+    return {
+      props: { project }
     }
-  };
+  } catch (err) {
+    return {
+      status: 500,
+      error: err
+    }
+  }
+}
 </script>
 
 <script>
-  import BlockContent from "@arzidava/svelte-portable-text"
-  import serializers from "$lib/serializers"
+  import PortableText from '@portabletext/svelte'
+  import serializers from '$lib/serializers'
   import urlBuilder from '@sanity/image-url'
   import client from '$lib/sanityClient'
-  import Image from "$lib/Image.svelte"
+  import Image from '$lib/Image.svelte'
   import ProjectMembers from '$lib/ProjectMembers.svelte'
   import Categories from '$lib/Categories.svelte'
   import { format, parseISO, differenceInDays, formatDistance } from 'date-fns'
-  import RelatedProjects from "$lib/RelatedProjects.svelte"
+  import RelatedProjects from '$lib/RelatedProjects.svelte'
 
   const urlFor = source => urlBuilder(client).image(source)
   
@@ -58,7 +57,7 @@ export const load: Load = async ({fetch, page}) => {
       <h1>{project.title}</h1>
       {#if project.body}
       <div class="content">
-        <BlockContent blocks={project.body} {serializers} />
+        <PortableText blocks={project.body} {serializers} />
       </div>
       {/if}
     </div>
