@@ -1,7 +1,7 @@
 {
   "version": 0,
   "title": "Portfolio with SvelteKit",
-  "description": "Clean React.js starting point for portfolios, project listings or case studies.",
+  "description": "Clean SvelteKit starting point for portfolios, project listings or case studies. Adapted from Portfolio with Gatsby",
   "previewMedia": {
     "type": "image",
     "src": "assets/frontend.jpg",
